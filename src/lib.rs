@@ -21,14 +21,11 @@ impl Config {
 
         let file_path = args[1].clone();
         let mut locations: Vec<Coordinates> = vec![];
-        let argn = args.len();
-        for i in 2..argn {
-            match Config::parse_locations(&args[i]) {
-                Ok(coordinate) => {
-                    locations.push(coordinate);
-                }
-                Err(e) => println!("Error : {}\n, Location Number : {}", e, i + 2),
-            };
+        for arg in &args[2..] {
+            match Config::parse_locations(arg) {
+                Ok(coordinate) => locations.push(coordinate),
+                Err(e) => eprintln!("Error: {}, Location: {}", e, arg),
+            }
         }
 
         Ok(Config {
