@@ -1,4 +1,4 @@
-use std::{error::Error, fs, sync::Arc, vec};
+use std::{error::Error, fs};
 
 #[derive(Debug)]
 pub struct Coordinates {
@@ -66,23 +66,22 @@ impl Config {
 }
 
 pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
+    let contents = match fs::read_to_string(&config.file_path) {
+        Ok(contents) => contents,
+        Err(e) => {
+            return Err(Box::new(e));
+        }
+    };
+    let lines: Vec<&str> = contents.lines().collect();
+
     for coordinate in config.locations {
-        search(&coordinate, &config.file_path);
+        print_location(&coordinate, &lines);
     }
 
     Ok(())
 }
 
-pub fn search(coordinate: &Coordinates, file_path: &str) {
-    let contents = match fs::read_to_string(file_path) {
-        Ok(contents) => contents,
-        Err(e) => {
-            println!("Error reading file: {}", e);
-            return;
-        }
-    };
-    let lines: Vec<&str> = contents.lines().collect();
-
+pub fn print_location(coordinate: &Coordinates, lines: &[&str]) {
     println!(
         "Line: {}, Range: [{},{})",
         coordinate.line_number, coordinate.char_start, coordinate.char_end
@@ -101,7 +100,10 @@ pub fn search(coordinate: &Coordinates, file_path: &str) {
         || (coordinate.char_end as usize) > line_len
         || coordinate.char_start >= coordinate.char_end
     {
-        println!("Invalid range for line. Line has {} characters.\n", line_len);
+        println!(
+            "Invalid range for line. Line has {} characters.\n",
+            line_len
+        );
         return;
     }
 
@@ -109,7 +111,6 @@ pub fn search(coordinate: &Coordinates, file_path: &str) {
 
     let mut highlight = String::new();
     for i in 0..line.len() {
-        //range is inclusive on char_start and exlusive on char_end
         if i >= (coordinate.char_start as usize) && i < (coordinate.char_end as usize) {
             highlight.push('^');
         } else {
@@ -117,11 +118,4 @@ pub fn search(coordinate: &Coordinates, file_path: &str) {
         }
     }
     println!("{}", highlight);
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    
 }
