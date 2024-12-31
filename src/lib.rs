@@ -1,3 +1,5 @@
+pub mod data;
+
 use std::{error::Error, fs};
 
 #[derive(Debug)]
