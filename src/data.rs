@@ -67,15 +67,55 @@
 ///     else stats2    (* or performance_check, making in-degree 2 *)
 ///
 use std::collections::{BTreeMap, BTreeSet};
+use serde::{Deserialize, Serialize};
+use std::fs;
 
+#[derive(Debug, Serialize, Deserialize)]
 pub struct Database {
     data_flows: Vec<DataFlow>,
     types: BTreeMap<String, Type>,
     type_vars: BTreeSet<String>,
 }
 
+impl Database {
+    pub fn load_from_json(path: &str) -> Self {
+        #[derive(Deserialize)]
+        struct Wrapper {
+            dataflow: Vec<Vec<UnitFlow>>,
+        }
+
+        let data = fs::read_to_string(path).expect("Could not read file");
+        let parsed: Wrapper = serde_json::from_str(&data).expect("JSON parse error");
+
+        let mut type_map: BTreeMap<String, Type> = BTreeMap::new();
+        let mut type_vars = BTreeSet::new();
+
+        for flow in &parsed.dataflow {
+            for uf in flow {
+                match uf {
+                    UnitFlow::Type(t) => {
+                        type_map.insert(t.name.clone(), t.clone());
+                    },
+                    UnitFlow::TypeVar(tv) => {
+                        type_vars.insert(tv.name.clone());
+                    },
+                    _ => {}
+                }
+            }
+        }
+
+        Database {
+            data_flows: parsed.dataflow,
+            types: type_map,
+            type_vars,
+        }
+    }
+}
+
+
 type DataFlow = Vec<UnitFlow>;
 
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Type {
     name: String,
     args: Vec<String>,
@@ -83,23 +123,27 @@ pub struct Type {
     desc: Option<String>,
 }
 
+#[derive(Debug, Serialize, Deserialize)]
 pub struct ConstructorArg {
     name: String,
     arg_index: usize,
     desc: Option<String>,
 }
 
+#[derive(Debug, Serialize, Deserialize)]
 pub struct ProgLoc {
     line: usize,
     char_range: (usize, usize),
     desc: Option<String>,
 }
 
+#[derive(Debug, Serialize, Deserialize)]
 pub struct TypeVar {
     name: String,
     desc: Option<String>,
 }
 
+#[derive(Debug, Serialize, Deserialize)]
 pub enum UnitFlow {
     Type(Type),
     ConstructorArg(ConstructorArg),
