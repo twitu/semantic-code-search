@@ -13,6 +13,7 @@ fn main() {
     let lines: Vec<&str> = file_contents.lines().collect();
 
     let results = search_dataflows(&db, &query);
+    println!("Matched data flows:");
     print_results(&results, &lines);
 }
 

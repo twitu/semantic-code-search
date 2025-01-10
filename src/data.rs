@@ -131,9 +131,15 @@ impl Database {
             ([], []) => true,
             (_, []) => false,
             ([], _) => false,
-            (f, [QueryOps::Wildcard, rest @ ..]) => {
-                for skip_count in 1..=f.len() {
-                    if Self::match_flow(&f[skip_count..], rest) {
+            (f, q @ [QueryOps::Wildcard, rest @ ..]) => {
+                let wildcard_count = q.iter()
+                    .take_while(|&op| matches!(op, QueryOps::Wildcard))
+                    .count();
+                
+                let remaining_query = &q[wildcard_count..];
+                
+                for skip_count in 0..=f.len() {
+                    if Self::match_flow(&f[skip_count..], remaining_query) {
                         return true;
                     }
                 }
