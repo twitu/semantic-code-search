@@ -67,12 +67,12 @@
 ///     else stats2    (* or performance_check, making in-degree 2 *)
 ///
 use std::collections::{BTreeMap, BTreeSet};
-use serde::{Deserialize, Serialize};
 use std::fs;
+use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Database {
-    data_flows: Vec<DataFlow>,
+    pub data_flows: Vec<DataFlow>,
     types: BTreeMap<String, Type>,
     type_vars: BTreeSet<String>,
 }
@@ -81,7 +81,7 @@ impl Database {
     pub fn load_from_json(path: &str) -> Self {
         #[derive(Deserialize)]
         struct Wrapper {
-            dataflow: Vec<UnitFlow>,
+            dataflow: Vec<Vec<UnitFlow>>,
         }
 
         let data = fs::read_to_string(path).expect("Could not read file");
@@ -90,20 +90,22 @@ impl Database {
         let mut type_map: BTreeMap<String, Type> = BTreeMap::new();
         let mut type_vars = BTreeSet::new();
 
-        for uf in &parsed.dataflow {
-            match uf {
-                UnitFlow::Type(t) => {
-                    type_map.insert(t.name.clone(), t.clone());
+        for flow in &parsed.dataflow {
+            for uf in flow {
+                match uf {
+                    UnitFlow::Type(t) => {
+                        type_map.insert(t.name.clone(), t.clone());
+                    }
+                    UnitFlow::TypeVar(tv) => {
+                        type_vars.insert(tv.name.clone());
+                    }
+                    _ => {}
                 }
-                UnitFlow::TypeVar(tv) => {
-                    type_vars.insert(tv.name.clone());
-                }
-                _ => {}
             }
         }
 
         Database {
-            data_flows: vec![parsed.dataflow],
+            data_flows: parsed.dataflow,
             types: type_map,
             type_vars,
         }
@@ -172,6 +174,48 @@ pub struct ProgLoc {
     desc: Option<String>,
 }
 
+impl ProgLoc{
+    pub fn print_location(loc: &ProgLoc, lines: &[&str]) {
+        println!(
+            "Line: {}, Range: [{},{})",
+            loc.line, loc.char_range.0, loc.char_range.1
+        );
+        if loc.line == 0 || (loc.line as usize) > lines.len() {
+            println!(
+                "Invalid line number: File has only {} lines.\n",
+                lines.len()
+            );
+            return;
+        }
+    
+        let line_text = lines[(loc.line - 1) as usize];
+        let line_len = line_text.len();
+        if loc.char_range.0 >= line_len
+            || loc.char_range.1 > line_len
+            || loc.char_range.0 >= loc.char_range.1
+        {
+            println!(
+                "Invalid range for line. Line has {} characters.\n",
+                line_len
+            );
+            return;
+        }
+    
+        println!("{}", line_text);
+    
+        let mut highlight = String::new();
+        for i in 0..line_text.len() {
+            if i >= loc.char_range.0 && i < loc.char_range.1 {
+                highlight.push('^');
+            } else {
+                highlight.push(' ');
+            }
+        }
+        println!("{}", highlight);
+    }
+    
+}
+
 #[derive(Debug, Serialize, Deserialize)]
 pub struct TypeVar {
     name: String,
@@ -186,6 +230,7 @@ pub enum UnitFlow {
     ProgLoc(ProgLoc),
 }
 
+#[derive(serde::Deserialize)]
 /// Match constructor argument in the data flow by name
 pub struct QConstructorArg {
     name: String,
@@ -195,13 +240,15 @@ pub struct QConstructorArg {
     desc: Option<String>,
 }
 
+#[derive(serde::Deserialize)]
 /// Match type by name
 pub struct QType {
-    name: String,
+    pub name: String,
     /// Optionally match on description
-    desc: Option<String>,
+    pub desc: Option<String>,
 }
 
+#[derive(serde::Deserialize)]
 pub enum QueryOps {
     /// Match type variable by in-degree
     QTypeVar(usize),
