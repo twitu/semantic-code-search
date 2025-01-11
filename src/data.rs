@@ -73,6 +73,7 @@ use serde::{Deserialize, Serialize};
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Database {
     pub data_flows: Vec<DataFlow>,
+    pub file_path : String,
     types: BTreeMap<String, Type>,
     type_vars: BTreeSet<String>,
 }
@@ -81,6 +82,7 @@ impl Database {
     pub fn load_from_json(path: &str) -> Self {
         #[derive(Deserialize)]
         struct Wrapper {
+            file_path: String,
             dataflow: Vec<Vec<UnitFlow>>,
         }
 
@@ -106,6 +108,7 @@ impl Database {
 
         Database {
             data_flows: parsed.dataflow,
+            file_path : parsed.file_path,
             types: type_map,
             type_vars,
         }
