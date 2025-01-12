@@ -1,3 +1,5 @@
+use colored::*;
+use serde::{Deserialize, Serialize};
 /// Data types and Query operators
 ///
 /// This module describes the core type system information being described
@@ -68,12 +70,11 @@
 ///
 use std::collections::{BTreeMap, BTreeSet};
 use std::fs;
-use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Database {
     pub data_flows: Vec<DataFlow>,
-    pub file_path : String,
+    pub file_path: String,
     types: BTreeMap<String, Type>,
     type_vars: BTreeSet<String>,
 }
@@ -108,7 +109,7 @@ impl Database {
 
         Database {
             data_flows: parsed.dataflow,
-            file_path : parsed.file_path,
+            file_path: parsed.file_path,
             types: type_map,
             type_vars,
         }
@@ -135,12 +136,13 @@ impl Database {
             (_, []) => false,
             ([], _) => false,
             (f, q @ [QueryOps::Wildcard, rest @ ..]) => {
-                let wildcard_count = q.iter()
+                let wildcard_count = q
+                    .iter()
                     .take_while(|&op| matches!(op, QueryOps::Wildcard))
                     .count();
-                
+
                 let remaining_query = &q[wildcard_count..];
-                
+
                 for skip_count in 0..=f.len() {
                     if Self::match_flow(&f[skip_count..], remaining_query) {
                         return true;
@@ -183,36 +185,40 @@ pub struct ProgLoc {
     desc: Option<String>,
 }
 
-impl ProgLoc{
+impl ProgLoc {
     pub fn print_location(loc: &ProgLoc, lines: &[&str]) {
-        println!(
-            "Line: {}, Range: [{},{})",
-            loc.line, loc.char_range.0, loc.char_range.1
-        );
-        if loc.line == 0 || (loc.line as usize) > lines.len() {
-            println!(
-                "Invalid line number: File has only {} lines.\n",
-                lines.len()
-            );
-            return;
-        }
-    
-        let line_text = lines[(loc.line - 1) as usize];
-        let line_len = line_text.len();
-        if loc.char_range.0 >= line_len
-            || loc.char_range.1 > line_len
+        if loc.line == 0
+            || (loc.line as usize) > lines.len()
+            || loc.char_range.0 >= lines[(loc.line - 1) as usize].len()
+            || loc.char_range.1 > lines[(loc.line - 1) as usize].len()
             || loc.char_range.0 >= loc.char_range.1
         {
-            println!(
-                "Invalid range for line. Line has {} characters.\n",
-                line_len
-            );
             return;
         }
-    
-        println!("{}", line_text);
-    
-        let mut highlight = String::new();
+
+        let line_text = lines[(loc.line - 1) as usize];
+
+        println!("{}", "━".repeat(80).bright_black());
+        println!(
+            "{} {} {} {} {} {}",
+            "Location:".bright_blue().bold(),
+            format!("Line {}", loc.line).yellow(),
+            "│".bright_black(),
+            "Range:".bright_blue().bold(),
+            format!("[{}, {})", loc.char_range.0, loc.char_range.1).yellow(),
+            "━".repeat(20).bright_black()
+        );
+
+        let padding = 4;
+        let line_num = format!("{:>padding$}", loc.line);
+        println!(
+            "{} {}  {}",
+            line_num.bright_black(),
+            "│".bright_black(),
+            line_text
+        );
+
+        let mut highlight = String::with_capacity(line_text.len());
         for i in 0..line_text.len() {
             if i >= loc.char_range.0 && i < loc.char_range.1 {
                 highlight.push('^');
@@ -220,9 +226,17 @@ impl ProgLoc{
                 highlight.push(' ');
             }
         }
-        println!("{}", highlight);
+
+        println!(
+            "{} {}  {}",
+            " ".repeat(padding),
+            "│".bright_black(),
+            highlight.green()
+        );
+
+        println!("{}", "━".repeat(80).bright_black());
+        println!();
     }
-    
 }
 
 #[derive(Debug, Serialize, Deserialize)]

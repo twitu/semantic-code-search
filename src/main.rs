@@ -1,3 +1,4 @@
+use colored::*;
 use semantic_code_search::data::{Database, ProgLoc, QueryOps, UnitFlow};
 use semantic_code_search::{Config, QueryReader};
 use std::fs;
@@ -8,13 +9,17 @@ fn main() {
 
     let db = Database::load_from_json(&config.data_json);
     let query = QueryReader::read_from_file(&config.queries_json);
-    let file_contents =
-        fs::read_to_string(&db.file_path).expect("Failed to read file contents");
+    let file_contents = fs::read_to_string(&db.file_path).expect("Failed to read file contents");
     let lines: Vec<&str> = file_contents.lines().collect();
-
     let results = search_dataflows(&db, &query);
-    println!("Matched data flows:");
+    println!("\n{}", "━".repeat(80).bright_black());
+    if results.is_empty() {
+        println!("No data flows matched the query.\n");
+    } else {
+        println!("Matched data flows:\n");
+    }
     print_results(&results, &lines);
+    println!("{}", "━".repeat(80).bright_black());
 }
 
 fn search_dataflows<'a>(db: &'a Database, query: &'a [QueryOps]) -> Vec<&'a Vec<UnitFlow>> {
