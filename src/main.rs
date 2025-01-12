@@ -25,7 +25,7 @@ fn main() {
 fn search_dataflows<'a>(db: &'a Database, query: &'a [QueryOps]) -> Vec<&'a Vec<UnitFlow>> {
     db.data_flows
         .iter()
-        .filter(|flow| Database::match_flow(flow, query))
+        .filter(|flow| db.match_flow(flow, query))
         .collect()
 }
 

@@ -115,8 +115,11 @@ impl Database {
         }
     }
 
-    pub fn match_unit_flow(uf: &UnitFlow, query: &QueryOps) -> bool {
+    pub fn match_unit_flow(&self, uf: &UnitFlow, query: &QueryOps) -> bool {
         match (uf, query) {
+            (UnitFlow::TypeVar(tv), QueryOps::QTypeVar(count)) => {
+                self.count_typevar_flows(&tv.name) == *count
+            }
             (UnitFlow::Type(t), QueryOps::QType(q)) => t.name == q.name,
             (UnitFlow::ConstructorArg(c), QueryOps::QConstructorArg(q)) => c.name == q.name,
             (_, QueryOps::QDesc(d)) => match uf {
@@ -130,7 +133,7 @@ impl Database {
         }
     }
 
-    pub fn match_flow(flow: &[UnitFlow], query: &[QueryOps]) -> bool {
+    pub fn match_flow(&self, flow: &[UnitFlow], query: &[QueryOps]) -> bool {
         match (flow, query) {
             ([], []) => true,
             (_, []) => false,
@@ -144,23 +147,37 @@ impl Database {
                 let remaining_query = &q[wildcard_count..];
 
                 for skip_count in 0..=f.len() {
-                    if Self::match_flow(&f[skip_count..], remaining_query) {
+                    if self.match_flow(&f[skip_count..], remaining_query) {
                         return true;
                     }
                 }
                 false
             }
             ([fhead, frest @ ..], [qhead, qrest @ ..]) => {
-                if Self::match_unit_flow(fhead, qhead) {
-                    Self::match_flow(frest, qrest)
+                if self.match_unit_flow(fhead, qhead) {
+                    self.match_flow(frest, qrest)
                 } else {
                     false
                 }
             }
         }
     }
-}
 
+    pub fn count_typevar_flows(&self, typevar_name: &str) -> usize {
+        self.data_flows
+            .iter()
+            .filter(|flow| {
+                flow.iter().any(|unit| {
+                    if let UnitFlow::TypeVar(tv) = unit {
+                        tv.name == typevar_name
+                    } else {
+                        false
+                    }
+                })
+            })
+            .count()
+    }
+}
 type DataFlow = Vec<UnitFlow>;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
