@@ -14,12 +14,11 @@ fn main() {
     let results = search_dataflows(&db, &query);
     println!("\n{}", "━".repeat(80).bright_black());
     if results.is_empty() {
-        println!("No data flows matched the query.\n");
+        println!("{}", "No data flows matched the query.\n".bright_red());
     } else {
-        println!("Matched data flows:\n");
+        println!("{}", "Matched data flows:\n".bright_blue());
     }
     print_results(&results, &lines);
-    println!("{}", "━".repeat(80).bright_black());
 }
 
 fn search_dataflows<'a>(db: &'a Database, query: &'a [QueryOps]) -> Vec<&'a Vec<UnitFlow>> {
@@ -30,14 +29,32 @@ fn search_dataflows<'a>(db: &'a Database, query: &'a [QueryOps]) -> Vec<&'a Vec<
 }
 
 fn print_results(results: &[&Vec<UnitFlow>], lines: &[&str]) {
-    for flow in results {
-        let prog_locs = flow.iter().filter_map(|uf| match uf {
-            UnitFlow::ProgLoc(pl) => Some(pl),
-            _ => None,
-        });
+    for (flow_idx, flow) in results.iter().enumerate() {
+        let prog_locs: Vec<_> = flow
+            .iter()
+            .filter_map(|uf| match uf {
+                UnitFlow::ProgLoc(pl) => Some(pl),
+                _ => None,
+            })
+            .collect();
 
+        if prog_locs.is_empty() {
+            println!(
+                "{}",
+                "No program locations found for this data flow.".bright_red()
+            );
+            continue;
+        }
+
+        let mut itr = 1;
         for loc in prog_locs {
-            ProgLoc::print_location(loc, lines);
+            if ProgLoc::print_location(loc, lines, &itr) {
+                itr = itr + 1;
+            };
+        }
+
+        if itr > 1 && flow_idx < results.len() - 1 {
+            println!("{}", "━".repeat(80).bright_black());
         }
     }
 }
