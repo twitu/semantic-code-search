@@ -1,6 +1,5 @@
 pub mod data;
 use data::QueryOps;
-use serde_json;
 use std::fs;
 
 pub struct QueryReader;

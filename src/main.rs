@@ -49,7 +49,7 @@ fn print_results(results: &[&Vec<UnitFlow>], lines: &[&str]) {
         let mut itr = 1;
         for loc in prog_locs {
             if ProgLoc::print_location(loc, lines, &itr) {
-                itr = itr + 1;
+                itr += 1;
             };
         }
 
