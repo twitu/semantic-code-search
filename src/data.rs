@@ -217,13 +217,9 @@ impl ProgLoc {
         let line_text = lines[loc.line - 1];
 
         println!(
-            "{} {} {} {} {} {}",
-            format!("{} : ", itr).bright_blue().bold(),
-            "Location:".bright_blue().bold(),
-            format!("Line {}", loc.line).yellow(),
-            "│".bright_black(),
-            "Range:".bright_blue().bold(),
-            format!("[{}, {})", loc.char_range.0, loc.char_range.1).yellow(),
+            "{} {}",
+            format!("[{}]", itr).bright_blue(),
+            format!("l.{}:{},{}", loc.line, loc.char_range.0, loc.char_range.1).yellow(),
         );
 
         let padding = 4;
