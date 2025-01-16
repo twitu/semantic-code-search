@@ -67,22 +67,19 @@ impl Database {
 
     pub fn match_flow(&self, flow: &[UnitFlow], query: &[QueryOps]) -> bool {
         match (flow, query) {
-            ([], []) => true,
-            (_, []) => false,
-            ([], _) => false,
-            (f, q @ [QueryOps::Wildcard, rest @ ..]) => {
-                let wildcard_count = q
-                    .iter()
-                    .take_while(|&op| matches!(op, QueryOps::Wildcard))
-                    .count();
-
-                let remaining_query = &q[wildcard_count..];
-
-                for skip_count in 0..=f.len() {
-                    if self.match_flow(&f[skip_count..], remaining_query) {
-                        return true;
+            // Wildcard matches all remaining flows
+            (_, [QueryOps::Wildcard]) => true,
+            (f, [QueryOps::Wildcard, next_query, rest @ ..]) => {
+                // Try each position until we find a match for the next query item
+                for (idx, unit_flow) in f.iter().enumerate() {
+                    if self.match_unit_flow(unit_flow, next_query) {
+                        // Found a match for the item after wildcard, try to match the rest
+                        if self.match_flow(&f[idx + 1..], rest) {
+                            return true;
+                        }
                     }
                 }
+
                 false
             }
             ([fhead, frest @ ..], [qhead, qrest @ ..]) => {
@@ -92,6 +89,8 @@ impl Database {
                     false
                 }
             }
+            (_, []) => true,
+            _ => false,
         }
     }
 
@@ -198,7 +197,7 @@ pub enum UnitFlow {
     ProgLoc(ProgLoc),
 }
 
-#[derive(serde::Deserialize)]
+#[derive(serde::Deserialize, Debug)]
 /// Match constructor argument in the data flow by name
 pub struct QConstructorArg {
     name: String,
@@ -208,7 +207,7 @@ pub struct QConstructorArg {
     desc: Option<String>,
 }
 
-#[derive(serde::Deserialize)]
+#[derive(serde::Deserialize, Debug)]
 /// Match type by name
 pub struct QType {
     pub name: String,
@@ -216,7 +215,7 @@ pub struct QType {
     pub desc: Option<String>,
 }
 
-#[derive(serde::Deserialize)]
+#[derive(serde::Deserialize, Debug)]
 pub enum QueryOps {
     /// Match type variable by in-degree
     QTypeVar(usize),
