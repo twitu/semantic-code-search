@@ -141,7 +141,7 @@ impl ProgLoc {
             || loc.char_range.1 > lines[loc.line - 1].len()
             || loc.char_range.0 >= loc.char_range.1
         {
-            // println!("Invalid location: {:?}", loc);
+            println!("Invalid location: {:?} on line {}", loc, lines[loc.line - 1]);
             return false;
         }
 

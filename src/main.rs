@@ -16,7 +16,11 @@ fn main() {
     if results.is_empty() {
         println!("{}", "No data flows matched the query.\n".bright_red());
     } else {
-        println!("{}", "Matched data flows:\n".bright_blue());
+        println!(
+            "{} {}\n",
+            "Matched data flows:".bright_blue(),
+            results.len()
+        );
     }
     print_results(&results, &lines);
 }
