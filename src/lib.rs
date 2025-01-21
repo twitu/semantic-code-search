@@ -12,7 +12,8 @@ impl QueryReader {
 }
 pub struct Config {
     pub data_json: String,
-    pub queries_json: String,
+    pub query_json: String,
+    pub query: Vec<QueryOps>,
 }
 
 impl Config {
@@ -22,11 +23,19 @@ impl Config {
         }
 
         let data_json = args[1].clone();
-        let queries_json = args[2].clone();
+        let query_json = args[2].clone();
+        let query = match QueryOps::parse_query(&query_json) {
+            Ok(q) => q,
+            Err(e) => {
+                println!("Could not parse query: {}", e);
+                vec![]
+            }
+        };
 
         Ok(Config {
             data_json,
-            queries_json,
+            query_json,
+            query,
         })
     }
 }
