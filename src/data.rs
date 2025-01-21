@@ -134,27 +134,27 @@ pub struct ProgLoc {
 }
 
 impl ProgLoc {
-    pub fn print_location(loc: &ProgLoc, lines: &[&str], itr: &usize) -> bool {
+    pub fn print_location(loc: &ProgLoc, itr: &usize) -> bool {
         if {
             loc.char_range.0 >= loc.line.len()
                 || loc.char_range.1 > loc.line.len() + 1
                 || loc.char_range.0 >= loc.char_range.1
         } {
-            println!("Invalid location: {:?}", loc);
+            // println!("Invalid location: {:?}", loc);
             return false;
         }
 
         let line_text = &loc.line;
+        // let line_text = &loc.line.trim_start().trim_end();
 
-        // println!(
-        //     "{} {}",
-        //     format!("[{}]", itr).bright_blue(),
-        //     format!("l.{}:{},{}", loc.line, loc.char_range.0, loc.char_range.1).yellow(),
-        // );
+        println!(
+            "{}",
+            format!("[{}]", itr).bright_blue(),
+        );
 
         // let padding = 4;
         let padding = 0;
-        // let line_num = format!("{:>padding$}", loc.line);
+        let line_num = format!("{:>padding$}", loc.line);
         println!(
             // "{} {}  {}",
             "{}",
@@ -185,7 +185,7 @@ impl ProgLoc {
         //     highlight.green()
         // );
 
-        println!();
+        // println!();
         true
     }
 }
