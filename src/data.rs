@@ -128,55 +128,62 @@ pub struct ConstructorArg {
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct ProgLoc {
-    line: usize,
+    line: String,
     char_range: (usize, usize),
     desc: Option<String>,
 }
 
 impl ProgLoc {
     pub fn print_location(loc: &ProgLoc, lines: &[&str], itr: &usize) -> bool {
-        if loc.line == 0
-            || loc.line > lines.len()
-            || loc.char_range.0 >= lines[loc.line - 1].len()
-            || loc.char_range.1 > lines[loc.line - 1].len()
-            || loc.char_range.0 >= loc.char_range.1
-        {
-            println!("Invalid location: {:?} on line {}", loc, lines[loc.line - 1]);
+        if {
+            loc.char_range.0 >= loc.line.len()
+                || loc.char_range.1 > loc.line.len() + 1
+                || loc.char_range.0 >= loc.char_range.1
+        } {
+            println!("Invalid location: {:?}", loc);
             return false;
         }
 
-        let line_text = lines[loc.line - 1];
+        let line_text = &loc.line;
 
-        println!(
-            "{} {}",
-            format!("[{}]", itr).bright_blue(),
-            format!("l.{}:{},{}", loc.line, loc.char_range.0, loc.char_range.1).yellow(),
-        );
+        // println!(
+        //     "{} {}",
+        //     format!("[{}]", itr).bright_blue(),
+        //     format!("l.{}:{},{}", loc.line, loc.char_range.0, loc.char_range.1).yellow(),
+        // );
 
-        let padding = 4;
-        let line_num = format!("{:>padding$}", loc.line);
+        // let padding = 4;
+        let padding = 0;
+        // let line_num = format!("{:>padding$}", loc.line);
         println!(
-            "{} {}  {}",
-            line_num.bright_black(),
-            "│".bright_black(),
+            // "{} {}  {}",
+            "{}",
+            // line_num.bright_black(),
+            // "│".bright_black(),
             line_text
         );
 
         let mut highlight = String::with_capacity(line_text.len());
-        for i in 0..line_text.len() {
+        for i in 1..(line_text.len() + 1) {
             if i >= loc.char_range.0 && i < loc.char_range.1 {
                 highlight.push('^');
             } else {
                 highlight.push(' ');
             }
         }
-
         println!(
-            "{} {}  {}",
+            "{}{}",
             " ".repeat(padding),
-            "│".bright_black(),
+            // "│".bright_black(),
             highlight.green()
         );
+
+        // println!(
+        //     "{} {}  {}",
+        //     " ".repeat(padding),
+        //     "│".bright_black(),
+        //     highlight.green()
+        // );
 
         println!();
         true
