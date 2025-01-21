@@ -1,7 +1,6 @@
 use colored::*;
 use semantic_code_search::data::{Database, ProgLoc, QueryOps, UnitFlow};
 use semantic_code_search::{Config, QueryReader};
-use std::fs;
 
 fn main() {
     let config = Config::build(&std::env::args().collect::<Vec<String>>())
@@ -9,8 +8,6 @@ fn main() {
 
     let db = Database::load_from_json(&config.data_json);
     let query = QueryReader::read_from_file(&config.queries_json);
-    let file_contents = fs::read_to_string(&db.file_path).expect("Failed to read file contents");
-    let lines: Vec<&str> = file_contents.lines().collect();
     let results = search_dataflows(&db, &query);
     println!("\n{}", "━".repeat(80).bright_black());
     if results.is_empty() {
@@ -22,7 +19,7 @@ fn main() {
             results.len()
         );
     }
-    print_results(&results, &lines);
+    print_results(&results);
 }
 
 fn search_dataflows<'a>(db: &'a Database, query: &'a [QueryOps]) -> Vec<&'a Vec<UnitFlow>> {
@@ -32,7 +29,7 @@ fn search_dataflows<'a>(db: &'a Database, query: &'a [QueryOps]) -> Vec<&'a Vec<
         .collect()
 }
 
-fn print_results(results: &[&Vec<UnitFlow>], lines: &[&str]) {
+fn print_results(results: &[&Vec<UnitFlow>]) {
     for (flow_idx, flow) in results.iter().enumerate() {
         let prog_locs: Vec<_> = flow
             .iter()
@@ -52,7 +49,7 @@ fn print_results(results: &[&Vec<UnitFlow>], lines: &[&str]) {
 
         let mut itr = 1;
         for loc in prog_locs {
-            if ProgLoc::print_location(loc, lines, &itr) {
+            if ProgLoc::print_location(loc, &itr) {
                 itr += 1;
             };
         }
