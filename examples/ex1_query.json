@@ -1,0 +1,14 @@
+[
+  {
+    "QType": {
+      "name": "bool",
+      "desc": ""
+    }
+  },
+  {
+    "Wildcard": null
+  },
+  {
+    "QDesc": "if-then-else condition"
+  }
+]
