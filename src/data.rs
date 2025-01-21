@@ -128,42 +128,46 @@ pub struct ConstructorArg {
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct ProgLoc {
-    line: usize,
+    line: String,
     char_range: (usize, usize),
     desc: Option<String>,
 }
 
 impl ProgLoc {
-    pub fn print_location(loc: &ProgLoc, lines: &[&str], itr: &usize) -> bool {
-        if loc.line == 0
-            || loc.line > lines.len()
-            || loc.char_range.0 >= lines[loc.line - 1].len()
-            || loc.char_range.1 > lines[loc.line - 1].len()
-            || loc.char_range.0 >= loc.char_range.1
-        {
-            println!("Invalid location: {:?} on line {}", loc, lines[loc.line - 1]);
+    pub fn print_location(loc: &ProgLoc, itr: &usize) -> bool {
+        if {
+            loc.char_range.0 >= loc.line.len()
+                || loc.char_range.1 > loc.line.len() + 1
+                || loc.char_range.0 >= loc.char_range.1
+        } {
             return false;
         }
 
-        let line_text = lines[loc.line - 1];
+        let line_text = &loc.line;
+        let max_padding = 7;
+        let mut itr_space = 0;
+        if format!("{itr}").len() == 1 {
+            itr_space = format!("[{}]  |", itr).len().min(max_padding);
+        } else {
+            itr_space = format!("[{}] |", itr).len().min(max_padding);
+        }
 
-        println!(
-            "{} {}",
-            format!("[{}]", itr).bright_blue(),
-            format!("l.{}:{},{}", loc.line, loc.char_range.0, loc.char_range.1).yellow(),
-        );
-
-        let padding = 4;
-        let line_num = format!("{:>padding$}", loc.line);
-        println!(
-            "{} {}  {}",
-            line_num.bright_black(),
-            "│".bright_black(),
-            line_text
-        );
+        if format!("{itr}").len() == 1 {
+            println!(
+                "{} {}",
+                format!("[{}]  |", itr).bright_blue(),
+                line_text
+            );
+        } else {
+            println!(
+                "{} {}",
+                format!("[{}] |", itr).bright_blue(),
+                line_text
+            );
+        }
 
         let mut highlight = String::with_capacity(line_text.len());
-        for i in 0..line_text.len() {
+        for i in 1..(line_text.len() + 1) {
             if i >= loc.char_range.0 && i < loc.char_range.1 {
                 highlight.push('^');
             } else {
@@ -171,16 +175,11 @@ impl ProgLoc {
             }
         }
 
-        println!(
-            "{} {}  {}",
-            " ".repeat(padding),
-            "│".bright_black(),
-            highlight.green()
-        );
+        println!("{} {}", " ".repeat(itr_space), highlight.green());
 
-        println!();
         true
     }
+    
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -197,17 +196,17 @@ pub enum UnitFlow {
     ProgLoc(ProgLoc),
 }
 
-#[derive(serde::Deserialize, Debug)]
+#[derive(serde::Deserialize, Debug, PartialEq, Eq)]
 /// Match constructor argument in the data flow by name
 pub struct QConstructorArg {
-    name: String,
+    pub name: String,
     /// Optionally match on specific argument unified
-    arg_index: Option<usize>,
+    pub arg_index: Option<usize>,
     /// Optionally match on description
-    desc: Option<String>,
+    pub desc: Option<String>,
 }
 
-#[derive(serde::Deserialize, Debug)]
+#[derive(serde::Deserialize, Debug, PartialEq, Eq)]
 /// Match type by name
 pub struct QType {
     pub name: String,
@@ -215,7 +214,7 @@ pub struct QType {
     pub desc: Option<String>,
 }
 
-#[derive(serde::Deserialize, Debug)]
+#[derive(serde::Deserialize, Debug, PartialEq, Eq)]
 pub enum QueryOps {
     /// Match type variable by in-degree
     QTypeVar(usize),
@@ -227,4 +226,173 @@ pub enum QueryOps {
     QDesc(String),
     /// Match any unit flow
     Wildcard,
+}
+
+/// A simplified parser for query language
+/// Examples:
+///   *           -> Wildcard
+///   #2          -> QTypeVar(2) (# for count/number)
+///   List        -> QType(List)
+///   List:desc   -> QType(List) with description
+///   @x          -> QConstructorArg(x)
+///   @x.1        -> QConstructorArg(x) at index 1
+///   @x:desc     -> QConstructorArg(x) with description
+///   "desc"      -> QDesc(desc)
+impl QueryOps {
+    fn parse_token(token: &str) -> Result<QueryOps, String> {
+        match token.trim() {
+            "*" => Ok(QueryOps::Wildcard),
+
+            // Handle type variable count: #2
+            s if s.starts_with('#') => s[1..]
+                .parse()
+                .map(QueryOps::QTypeVar)
+                .map_err(|_| "Invalid type variable count".to_string()),
+
+            // Handle constructor arg: @x, @x.1, @x:desc
+            s if s.starts_with('@') => {
+                let parts: Vec<&str> = s[1..].split(|c| c == '.' || c == ':').collect();
+                match parts.as_slice() {
+                    [name] => Ok(QueryOps::QConstructorArg(QConstructorArg {
+                        name: name.to_string(),
+                        arg_index: None,
+                        desc: None,
+                    })),
+                    [name, idx] if idx.parse::<usize>().is_ok() => {
+                        Ok(QueryOps::QConstructorArg(QConstructorArg {
+                            name: name.to_string(),
+                            arg_index: Some(idx.parse().unwrap()),
+                            desc: None,
+                        }))
+                    }
+                    [name, desc] => Ok(QueryOps::QConstructorArg(QConstructorArg {
+                        name: name.to_string(),
+                        arg_index: None,
+                        desc: Some(desc.to_string()),
+                    })),
+                    _ => Err("Invalid constructor arg syntax".to_string()),
+                }
+            }
+
+            // Handle quoted description: "desc"
+            s if s.starts_with('"') && s.ends_with('"') => {
+                Ok(QueryOps::QDesc(s[1..s.len() - 1].to_string()))
+            }
+
+            // Handle type: List or List:desc
+            s => {
+                let parts: Vec<&str> = s.split(':').collect();
+                match parts.as_slice() {
+                    [name] => Ok(QueryOps::QType(QType {
+                        name: name.to_string(),
+                        desc: None,
+                    })),
+                    [name, desc] => Ok(QueryOps::QType(QType {
+                        name: name.to_string(),
+                        desc: Some(desc.to_string()),
+                    })),
+                    _ => Err("Invalid type syntax".to_string()),
+                }
+            }
+        }
+    }
+
+    pub fn parse_query(input: &str) -> Result<Vec<QueryOps>, String> {
+        input
+            .split(',')
+            .map(str::trim)
+            .filter(|s| !s.is_empty())
+            .map(Self::parse_token)
+            .collect()
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_simplified_query_parsing() {
+        // Test basic patterns
+        assert!(matches!(
+            QueryOps::parse_query("*").unwrap()[0],
+            QueryOps::Wildcard
+        ));
+
+        assert!(matches!(
+            QueryOps::parse_query("#3").unwrap()[0],
+            QueryOps::QTypeVar(3)
+        ));
+
+        // Test type patterns
+        let query = QueryOps::parse_query("List:generic").unwrap();
+        if let QueryOps::QType(qt) = &query[0] {
+            assert_eq!(qt.name, "List");
+            assert_eq!(qt.desc.as_deref(), Some("generic"));
+        }
+
+        // Test constructor arg patterns
+        let query = QueryOps::parse_query("@x.1").unwrap();
+        if let QueryOps::QConstructorArg(qa) = &query[0] {
+            assert_eq!(qa.name, "x");
+            assert_eq!(qa.arg_index, Some(1));
+        }
+
+        // Test description
+        let query = QueryOps::parse_query("\"some desc\"").unwrap();
+        if let QueryOps::QDesc(desc) = &query[0] {
+            assert_eq!(desc, "some desc");
+        }
+
+        // Test complex query
+        let query = QueryOps::parse_query("List, *, @x.2, \"foo bar\"").unwrap();
+        assert_eq!(
+            query,
+            vec![
+                QueryOps::QType(QType {
+                    name: "List".to_string(),
+                    desc: None,
+                }),
+                QueryOps::Wildcard,
+                QueryOps::QConstructorArg(QConstructorArg {
+                    name: "x".to_string(),
+                    arg_index: Some(2),
+                    desc: None
+                }),
+                QueryOps::QDesc("foo bar".to_string())
+            ]
+        );
+
+        let query = QueryOps::parse_query("bool,*,\"if-then-else condition\"").unwrap();
+        assert_eq!(
+            query,
+            vec![
+                QueryOps::QType(QType {
+                    name: "bool".to_string(),
+                    desc: None,
+                }),
+                QueryOps::Wildcard,
+                QueryOps::QDesc("if-then-else condition".to_string())
+            ]
+        );
+
+        let query = QueryOps::parse_query("bool,*,@Tuple.1,*,\"if-then-else condition\"").unwrap();
+        assert_eq!(
+            query,
+            vec![
+                QueryOps::QType(QType {
+                    name: "bool".to_string(),
+                    desc: None,
+                }),
+                QueryOps::Wildcard,
+                QueryOps::QConstructorArg(QConstructorArg {
+                    name: "Tuple".to_string(),
+                    arg_index: Some(1),
+                    desc: None,
+                }),
+                QueryOps::Wildcard,
+                QueryOps::QDesc("if-then-else condition".to_string())
+            ]
+        );
+    }
 }
