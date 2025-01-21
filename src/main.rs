@@ -1,17 +1,14 @@
 use colored::*;
 use semantic_code_search::data::{Database, ProgLoc, QueryOps, UnitFlow};
-use semantic_code_search::{Config, QueryReader};
+use semantic_code_search::Config;
+use std::fs;
 
 fn main() {
     let config = Config::build(&std::env::args().collect::<Vec<String>>())
         .expect("Failed to build configuration");
 
     let db = Database::load_from_json(&config.data_json);
-    let query = if config.query.is_empty() {
-        QueryReader::read_from_file(&config.query_json)
-    } else {
-        config.query
-    };
+    let query = config.query;
     let file_contents = fs::read_to_string(&db.file_path).expect("Failed to read file contents");
     let lines: Vec<&str> = file_contents.lines().collect();
     let results = search_dataflows(&db, &query);

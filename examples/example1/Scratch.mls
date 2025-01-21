@@ -1,2 +1,0 @@
-let even x = x mod 2 = 0
-if even 3 then print_endline "even" else print_endline "odd"

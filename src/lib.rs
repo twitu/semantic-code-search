@@ -1,15 +1,7 @@
 pub mod data;
 use data::QueryOps;
-use std::fs;
 
-pub struct QueryReader;
 
-impl QueryReader {
-    pub fn read_from_file(path: &str) -> Vec<QueryOps> {
-        let data = fs::read_to_string(path).expect("Failed to read queries file");
-        serde_json::from_str(&data).expect("Failed to parse queries JSON")
-    }
-}
 pub struct Config {
     pub data_json: String,
     pub query_json: String,
