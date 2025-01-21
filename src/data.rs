@@ -154,14 +154,16 @@ impl ProgLoc {
 
         if format!("{itr}").len() == 1 {
             println!(
-                "{} {}",
-                format!("[{}]  |", itr).bright_blue(),
+                "{}{} {}",
+                format!("[{}]  ", itr).bright_blue(),
+                format!("│").bright_black(), 
                 line_text
             );
         } else {
             println!(
-                "{} {}",
-                format!("[{}] |", itr).bright_blue(),
+                "{}{} {}",
+                format!("[{}] ", itr).bright_blue(),
+                format!("│").bright_black(), 
                 line_text
             );
         }
@@ -175,7 +177,7 @@ impl ProgLoc {
             }
         }
 
-        println!("{} {}", " ".repeat(itr_space), highlight.green());
+        println!("{}{} {}", " ".repeat(itr_space-1), "└".bright_black(), highlight.green());
 
         true
     }

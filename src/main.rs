@@ -1,7 +1,6 @@
 use colored::*;
 use semantic_code_search::data::{Database, ProgLoc, QueryOps, UnitFlow};
 use semantic_code_search::Config;
-use std::fs;
 
 fn main() {
     let config = Config::build(&std::env::args().collect::<Vec<String>>())
@@ -9,8 +8,6 @@ fn main() {
 
     let db = Database::load_from_json(&config.data_json);
     let query = config.query;
-    let file_contents = fs::read_to_string(&db.file_path).expect("Failed to read file contents");
-    let lines: Vec<&str> = file_contents.lines().collect();
     let results = search_dataflows(&db, &query);
     println!("\n{}", "━".repeat(80).bright_black());
     if results.is_empty() {
