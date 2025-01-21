@@ -1,0 +1,2437 @@
+{
+    "dataflow" : [
+      [
+        {
+          "Type" : {
+            "name" : "int",
+            "args" : [
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              74,
+              75
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ConstructorArg" : {
+            "name" : "Function",
+            "arg_index" : 0,
+            "enter" : true,
+            "desc" : ""
+          }
+        },
+        {
+          "Type" : {
+            "name" : "Function",
+            "args" : [
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              68,
+              73
+            ],
+            "desc" : "operator application"
+          }
+        },
+        {
+          "TypeVar" : {
+            "name" : "α56'",
+            "desc" : null
+          }
+        },
+        {
+          "TypeVar" : {
+            "name" : "α56'",
+            "desc" : null
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              68,
+              73
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ConstructorArg" : {
+            "name" : "Function",
+            "arg_index" : 0,
+            "enter" : true,
+            "desc" : ""
+          }
+        },
+        {
+          "Type" : {
+            "name" : "Function",
+            "args" : [
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              72,
+              73
+            ],
+            "desc" : "reference"
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 0,
+            "char_range" : [
+              678,
+              694
+            ],
+            "desc" : "function type"
+          }
+        },
+        {
+          "Type" : {
+            "name" : "Function",
+            "args" : [
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ConstructorArg" : {
+            "name" : "Function",
+            "arg_index" : 0,
+            "enter" : false,
+            "desc" : ""
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 0,
+            "char_range" : [
+              684,
+              694
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "Type" : {
+            "name" : "Function",
+            "args" : [
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ConstructorArg" : {
+            "name" : "Function",
+            "arg_index" : 0,
+            "enter" : false,
+            "desc" : ""
+          }
+        },
+        {
+          "TypeVar" : {
+            "name" : "α54'",
+            "desc" : null
+          }
+        }
+      ],
+      [
+        {
+          "TypeVar" : {
+            "name" : "α54'",
+            "desc" : null
+          }
+        },
+        {
+          "ConstructorArg" : {
+            "name" : "Function",
+            "arg_index" : 0,
+            "enter" : true,
+            "desc" : ""
+          }
+        },
+        {
+          "Type" : {
+            "name" : "Function",
+            "args" : [
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 0,
+            "char_range" : [
+              678,
+              694
+            ],
+            "desc" : "function type"
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              72,
+              73
+            ],
+            "desc" : "reference"
+          }
+        },
+        {
+          "Type" : {
+            "name" : "Function",
+            "args" : [
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ConstructorArg" : {
+            "name" : "Function",
+            "arg_index" : 0,
+            "enter" : false,
+            "desc" : ""
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              68,
+              71
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              55,
+              58
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "TypeVar" : {
+            "name" : "α53'",
+            "desc" : null
+          }
+        }
+      ],
+      [
+        {
+          "TypeVar" : {
+            "name" : "α53'",
+            "desc" : null
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              55,
+              58
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ConstructorArg" : {
+            "name" : "Tuple",
+            "arg_index" : 0,
+            "enter" : true,
+            "desc" : ""
+          }
+        },
+        {
+          "Type" : {
+            "name" : "Tuple",
+            "args" : [
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              54,
+              64
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ConstructorArg" : {
+            "name" : "Function",
+            "arg_index" : 0,
+            "enter" : true,
+            "desc" : ""
+          }
+        },
+        {
+          "Type" : {
+            "name" : "Function",
+            "args" : [
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              54,
+              87
+            ],
+            "desc" : "function"
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              147,
+              162
+            ],
+            "desc" : "reference"
+          }
+        },
+        {
+          "Type" : {
+            "name" : "Function",
+            "args" : [
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ConstructorArg" : {
+            "name" : "Function",
+            "arg_index" : 0,
+            "enter" : false,
+            "desc" : ""
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              163,
+              180
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "TypeVar" : {
+            "name" : "α61'",
+            "desc" : null
+          }
+        },
+        {
+          "TypeVar" : {
+            "name" : "α61'",
+            "desc" : null
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              163,
+              180
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ConstructorArg" : {
+            "name" : "Function",
+            "arg_index" : 0,
+            "enter" : true,
+            "desc" : ""
+          }
+        },
+        {
+          "Type" : {
+            "name" : "Function",
+            "args" : [
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              164,
+              171
+            ],
+            "desc" : "reference"
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              13,
+              32
+            ],
+            "desc" : "function type"
+          }
+        },
+        {
+          "Type" : {
+            "name" : "Function",
+            "args" : [
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ConstructorArg" : {
+            "name" : "Function",
+            "arg_index" : 0,
+            "enter" : false,
+            "desc" : ""
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              24,
+              32
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "Type" : {
+            "name" : "Tuple",
+            "args" : [
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ConstructorArg" : {
+            "name" : "Tuple",
+            "arg_index" : 0,
+            "enter" : false,
+            "desc" : ""
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              24,
+              27
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "Type" : {
+            "name" : "int",
+            "args" : [
+            ],
+            "desc" : null
+          }
+        }
+      ],
+      [
+        {
+          "Type" : {
+            "name" : "bool",
+            "args" : [
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 0,
+            "char_range" : [
+              690,
+              694
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ConstructorArg" : {
+            "name" : "Function",
+            "arg_index" : 1,
+            "enter" : true,
+            "desc" : ""
+          }
+        },
+        {
+          "Type" : {
+            "name" : "Function",
+            "args" : [
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 0,
+            "char_range" : [
+              684,
+              694
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ConstructorArg" : {
+            "name" : "Function",
+            "arg_index" : 1,
+            "enter" : true,
+            "desc" : ""
+          }
+        },
+        {
+          "Type" : {
+            "name" : "Function",
+            "args" : [
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 0,
+            "char_range" : [
+              678,
+              694
+            ],
+            "desc" : "function type"
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              72,
+              73
+            ],
+            "desc" : "reference"
+          }
+        },
+        {
+          "Type" : {
+            "name" : "Function",
+            "args" : [
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ConstructorArg" : {
+            "name" : "Function",
+            "arg_index" : 1,
+            "enter" : false,
+            "desc" : ""
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              68,
+              73
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "TypeVar" : {
+            "name" : "α56'",
+            "desc" : null
+          }
+        },
+        {
+          "TypeVar" : {
+            "name" : "α56'",
+            "desc" : null
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              68,
+              73
+            ],
+            "desc" : "operator application"
+          }
+        },
+        {
+          "Type" : {
+            "name" : "Function",
+            "args" : [
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ConstructorArg" : {
+            "name" : "Function",
+            "arg_index" : 1,
+            "enter" : false,
+            "desc" : ""
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              68,
+              75
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "TypeVar" : {
+            "name" : "α55'",
+            "desc" : null
+          }
+        }
+      ],
+      [
+        {
+          "TypeVar" : {
+            "name" : "α55'",
+            "desc" : null
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              68,
+              75
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ConstructorArg" : {
+            "name" : "Tuple",
+            "arg_index" : 0,
+            "enter" : true,
+            "desc" : ""
+          }
+        },
+        {
+          "Type" : {
+            "name" : "Tuple",
+            "args" : [
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              67,
+              87
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ConstructorArg" : {
+            "name" : "Function",
+            "arg_index" : 0,
+            "enter" : true,
+            "desc" : ""
+          }
+        },
+        {
+          "Type" : {
+            "name" : "Function",
+            "args" : [
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              54,
+              87
+            ],
+            "desc" : "function"
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              147,
+              162
+            ],
+            "desc" : "reference"
+          }
+        },
+        {
+          "Type" : {
+            "name" : "Function",
+            "args" : [
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ConstructorArg" : {
+            "name" : "Function",
+            "arg_index" : 0,
+            "enter" : false,
+            "desc" : ""
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              147,
+              180
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "TypeVar" : {
+            "name" : "α62'",
+            "desc" : null
+          }
+        },
+        {
+          "TypeVar" : {
+            "name" : "α62'",
+            "desc" : null
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              147,
+              180
+            ],
+            "desc" : "application"
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              117,
+              144
+            ],
+            "desc" : "pattern"
+          }
+        },
+        {
+          "Type" : {
+            "name" : "Tuple",
+            "args" : [
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ConstructorArg" : {
+            "name" : "Tuple",
+            "arg_index" : 0,
+            "enter" : false,
+            "desc" : ""
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              118,
+              119
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "TypeVar" : {
+            "name" : "α64'",
+            "desc" : null
+          }
+        }
+      ],
+      [
+        {
+          "TypeVar" : {
+            "name" : "α64'",
+            "desc" : null
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              118,
+              119
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ConstructorArg" : {
+            "name" : "Tuple",
+            "arg_index" : 0,
+            "enter" : true,
+            "desc" : ""
+          }
+        },
+        {
+          "Type" : {
+            "name" : "Tuple",
+            "args" : [
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              117,
+              144
+            ],
+            "desc" : "pattern"
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              147,
+              180
+            ],
+            "desc" : "match `condition`"
+          }
+        },
+        {
+          "TypeVar" : {
+            "name" : "α62'",
+            "desc" : null
+          }
+        },
+        {
+          "TypeVar" : {
+            "name" : "α62'",
+            "desc" : null
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              147,
+              180
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ConstructorArg" : {
+            "name" : "Function",
+            "arg_index" : 0,
+            "enter" : true,
+            "desc" : ""
+          }
+        },
+        {
+          "Type" : {
+            "name" : "Function",
+            "args" : [
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              147,
+              162
+            ],
+            "desc" : "reference"
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              54,
+              87
+            ],
+            "desc" : "function"
+          }
+        },
+        {
+          "Type" : {
+            "name" : "Function",
+            "args" : [
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ConstructorArg" : {
+            "name" : "Function",
+            "arg_index" : 0,
+            "enter" : false,
+            "desc" : ""
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              67,
+              87
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "Type" : {
+            "name" : "Tuple",
+            "args" : [
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ConstructorArg" : {
+            "name" : "Tuple",
+            "arg_index" : 0,
+            "enter" : false,
+            "desc" : ""
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              68,
+              75
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "TypeVar" : {
+            "name" : "α55'",
+            "desc" : null
+          }
+        }
+      ],
+      [
+        {
+          "TypeVar" : {
+            "name" : "α55'",
+            "desc" : null
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              68,
+              75
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ConstructorArg" : {
+            "name" : "Function",
+            "arg_index" : 0,
+            "enter" : true,
+            "desc" : ""
+          }
+        },
+        {
+          "Type" : {
+            "name" : "Function",
+            "args" : [
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              68,
+              73
+            ],
+            "desc" : "operator application"
+          }
+        },
+        {
+          "TypeVar" : {
+            "name" : "α56'",
+            "desc" : null
+          }
+        },
+        {
+          "TypeVar" : {
+            "name" : "α56'",
+            "desc" : null
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              68,
+              73
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ConstructorArg" : {
+            "name" : "Function",
+            "arg_index" : 0,
+            "enter" : true,
+            "desc" : ""
+          }
+        },
+        {
+          "Type" : {
+            "name" : "Function",
+            "args" : [
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              72,
+              73
+            ],
+            "desc" : "reference"
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 0,
+            "char_range" : [
+              678,
+              694
+            ],
+            "desc" : "function type"
+          }
+        },
+        {
+          "Type" : {
+            "name" : "Function",
+            "args" : [
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ConstructorArg" : {
+            "name" : "Function",
+            "arg_index" : 0,
+            "enter" : false,
+            "desc" : ""
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 0,
+            "char_range" : [
+              684,
+              694
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "Type" : {
+            "name" : "Function",
+            "args" : [
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ConstructorArg" : {
+            "name" : "Function",
+            "arg_index" : 0,
+            "enter" : false,
+            "desc" : ""
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 0,
+            "char_range" : [
+              690,
+              694
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "Type" : {
+            "name" : "bool",
+            "args" : [
+            ],
+            "desc" : null
+          }
+        }
+      ],
+      [
+        {
+          "Type" : {
+            "name" : "string",
+            "args" : [
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 0,
+            "char_range" : [
+              239,
+              245
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ConstructorArg" : {
+            "name" : "Function",
+            "arg_index" : 0,
+            "enter" : true,
+            "desc" : ""
+          }
+        },
+        {
+          "Type" : {
+            "name" : "Function",
+            "args" : [
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 0,
+            "char_range" : [
+              239,
+              253
+            ],
+            "desc" : "function type"
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              227,
+              240
+            ],
+            "desc" : "reference"
+          }
+        },
+        {
+          "Type" : {
+            "name" : "Function",
+            "args" : [
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ConstructorArg" : {
+            "name" : "Function",
+            "arg_index" : 0,
+            "enter" : false,
+            "desc" : ""
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              241,
+              255
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "Type" : {
+            "name" : "string",
+            "args" : [
+            ],
+            "desc" : null
+          }
+        }
+      ],
+      [
+        {
+          "Type" : {
+            "name" : "int",
+            "args" : [
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              74,
+              75
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ConstructorArg" : {
+            "name" : "Function",
+            "arg_index" : 0,
+            "enter" : true,
+            "desc" : ""
+          }
+        },
+        {
+          "Type" : {
+            "name" : "Function",
+            "args" : [
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              68,
+              73
+            ],
+            "desc" : "operator application"
+          }
+        },
+        {
+          "TypeVar" : {
+            "name" : "α56'",
+            "desc" : null
+          }
+        },
+        {
+          "TypeVar" : {
+            "name" : "α56'",
+            "desc" : null
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              68,
+              73
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ConstructorArg" : {
+            "name" : "Function",
+            "arg_index" : 0,
+            "enter" : true,
+            "desc" : ""
+          }
+        },
+        {
+          "Type" : {
+            "name" : "Function",
+            "args" : [
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              72,
+              73
+            ],
+            "desc" : "reference"
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 0,
+            "char_range" : [
+              678,
+              694
+            ],
+            "desc" : "function type"
+          }
+        },
+        {
+          "Type" : {
+            "name" : "Function",
+            "args" : [
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ConstructorArg" : {
+            "name" : "Function",
+            "arg_index" : 0,
+            "enter" : false,
+            "desc" : ""
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 0,
+            "char_range" : [
+              684,
+              694
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "Type" : {
+            "name" : "Function",
+            "args" : [
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ConstructorArg" : {
+            "name" : "Function",
+            "arg_index" : 0,
+            "enter" : false,
+            "desc" : ""
+          }
+        },
+        {
+          "TypeVar" : {
+            "name" : "α54'",
+            "desc" : null
+          }
+        }
+      ],
+      [
+        {
+          "TypeVar" : {
+            "name" : "α54'",
+            "desc" : null
+          }
+        },
+        {
+          "ConstructorArg" : {
+            "name" : "Function",
+            "arg_index" : 0,
+            "enter" : true,
+            "desc" : ""
+          }
+        },
+        {
+          "Type" : {
+            "name" : "Function",
+            "args" : [
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 0,
+            "char_range" : [
+              678,
+              694
+            ],
+            "desc" : "function type"
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              72,
+              73
+            ],
+            "desc" : "reference"
+          }
+        },
+        {
+          "Type" : {
+            "name" : "Function",
+            "args" : [
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ConstructorArg" : {
+            "name" : "Function",
+            "arg_index" : 0,
+            "enter" : false,
+            "desc" : ""
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              68,
+              71
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              55,
+              58
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "TypeVar" : {
+            "name" : "α53'",
+            "desc" : null
+          }
+        }
+      ],
+      [
+        {
+          "TypeVar" : {
+            "name" : "α53'",
+            "desc" : null
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              55,
+              58
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ConstructorArg" : {
+            "name" : "Tuple",
+            "arg_index" : 0,
+            "enter" : true,
+            "desc" : ""
+          }
+        },
+        {
+          "Type" : {
+            "name" : "Tuple",
+            "args" : [
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              54,
+              64
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ConstructorArg" : {
+            "name" : "Function",
+            "arg_index" : 0,
+            "enter" : true,
+            "desc" : ""
+          }
+        },
+        {
+          "Type" : {
+            "name" : "Function",
+            "args" : [
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              54,
+              87
+            ],
+            "desc" : "function"
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              147,
+              162
+            ],
+            "desc" : "reference"
+          }
+        },
+        {
+          "Type" : {
+            "name" : "Function",
+            "args" : [
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ConstructorArg" : {
+            "name" : "Function",
+            "arg_index" : 0,
+            "enter" : false,
+            "desc" : ""
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              163,
+              180
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "TypeVar" : {
+            "name" : "α61'",
+            "desc" : null
+          }
+        },
+        {
+          "TypeVar" : {
+            "name" : "α61'",
+            "desc" : null
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              163,
+              180
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ConstructorArg" : {
+            "name" : "Function",
+            "arg_index" : 0,
+            "enter" : true,
+            "desc" : ""
+          }
+        },
+        {
+          "Type" : {
+            "name" : "Function",
+            "args" : [
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              164,
+              171
+            ],
+            "desc" : "reference"
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              13,
+              32
+            ],
+            "desc" : "function type"
+          }
+        },
+        {
+          "Type" : {
+            "name" : "Function",
+            "args" : [
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ConstructorArg" : {
+            "name" : "Function",
+            "arg_index" : 0,
+            "enter" : false,
+            "desc" : ""
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              24,
+              32
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "Type" : {
+            "name" : "Tuple",
+            "args" : [
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ConstructorArg" : {
+            "name" : "Tuple",
+            "arg_index" : 0,
+            "enter" : false,
+            "desc" : ""
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              24,
+              27
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "Type" : {
+            "name" : "int",
+            "args" : [
+            ],
+            "desc" : null
+          }
+        }
+      ],
+      [
+        {
+          "Type" : {
+            "name" : "bool",
+            "args" : [
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 0,
+            "char_range" : [
+              690,
+              694
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ConstructorArg" : {
+            "name" : "Function",
+            "arg_index" : 1,
+            "enter" : true,
+            "desc" : ""
+          }
+        },
+        {
+          "Type" : {
+            "name" : "Function",
+            "args" : [
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 0,
+            "char_range" : [
+              684,
+              694
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ConstructorArg" : {
+            "name" : "Function",
+            "arg_index" : 1,
+            "enter" : true,
+            "desc" : ""
+          }
+        },
+        {
+          "Type" : {
+            "name" : "Function",
+            "args" : [
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 0,
+            "char_range" : [
+              678,
+              694
+            ],
+            "desc" : "function type"
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              72,
+              73
+            ],
+            "desc" : "reference"
+          }
+        },
+        {
+          "Type" : {
+            "name" : "Function",
+            "args" : [
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ConstructorArg" : {
+            "name" : "Function",
+            "arg_index" : 1,
+            "enter" : false,
+            "desc" : ""
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              68,
+              73
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "TypeVar" : {
+            "name" : "α56'",
+            "desc" : null
+          }
+        },
+        {
+          "TypeVar" : {
+            "name" : "α56'",
+            "desc" : null
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              68,
+              73
+            ],
+            "desc" : "operator application"
+          }
+        },
+        {
+          "Type" : {
+            "name" : "Function",
+            "args" : [
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ConstructorArg" : {
+            "name" : "Function",
+            "arg_index" : 1,
+            "enter" : false,
+            "desc" : ""
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              68,
+              75
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "TypeVar" : {
+            "name" : "α55'",
+            "desc" : null
+          }
+        }
+      ],
+      [
+        {
+          "TypeVar" : {
+            "name" : "α55'",
+            "desc" : null
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              68,
+              75
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ConstructorArg" : {
+            "name" : "Tuple",
+            "arg_index" : 0,
+            "enter" : true,
+            "desc" : ""
+          }
+        },
+        {
+          "Type" : {
+            "name" : "Tuple",
+            "args" : [
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              67,
+              87
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ConstructorArg" : {
+            "name" : "Function",
+            "arg_index" : 0,
+            "enter" : true,
+            "desc" : ""
+          }
+        },
+        {
+          "Type" : {
+            "name" : "Function",
+            "args" : [
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              54,
+              87
+            ],
+            "desc" : "function"
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              147,
+              162
+            ],
+            "desc" : "reference"
+          }
+        },
+        {
+          "Type" : {
+            "name" : "Function",
+            "args" : [
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ConstructorArg" : {
+            "name" : "Function",
+            "arg_index" : 0,
+            "enter" : false,
+            "desc" : ""
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              147,
+              180
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "TypeVar" : {
+            "name" : "α62'",
+            "desc" : null
+          }
+        },
+        {
+          "TypeVar" : {
+            "name" : "α62'",
+            "desc" : null
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              147,
+              180
+            ],
+            "desc" : "application"
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              117,
+              144
+            ],
+            "desc" : "pattern"
+          }
+        },
+        {
+          "Type" : {
+            "name" : "Tuple",
+            "args" : [
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ConstructorArg" : {
+            "name" : "Tuple",
+            "arg_index" : 0,
+            "enter" : false,
+            "desc" : ""
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              118,
+              119
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "TypeVar" : {
+            "name" : "α64'",
+            "desc" : null
+          }
+        }
+      ],
+      [
+        {
+          "TypeVar" : {
+            "name" : "α64'",
+            "desc" : null
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              118,
+              119
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ConstructorArg" : {
+            "name" : "Tuple",
+            "arg_index" : 0,
+            "enter" : true,
+            "desc" : ""
+          }
+        },
+        {
+          "Type" : {
+            "name" : "Tuple",
+            "args" : [
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              117,
+              144
+            ],
+            "desc" : "pattern"
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              147,
+              180
+            ],
+            "desc" : "match `condition`"
+          }
+        },
+        {
+          "TypeVar" : {
+            "name" : "α62'",
+            "desc" : null
+          }
+        },
+        {
+          "TypeVar" : {
+            "name" : "α62'",
+            "desc" : null
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              147,
+              180
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ConstructorArg" : {
+            "name" : "Function",
+            "arg_index" : 0,
+            "enter" : true,
+            "desc" : ""
+          }
+        },
+        {
+          "Type" : {
+            "name" : "Function",
+            "args" : [
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              147,
+              162
+            ],
+            "desc" : "reference"
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              54,
+              87
+            ],
+            "desc" : "function"
+          }
+        },
+        {
+          "Type" : {
+            "name" : "Function",
+            "args" : [
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ConstructorArg" : {
+            "name" : "Function",
+            "arg_index" : 0,
+            "enter" : false,
+            "desc" : ""
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              67,
+              87
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "Type" : {
+            "name" : "Tuple",
+            "args" : [
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ConstructorArg" : {
+            "name" : "Tuple",
+            "arg_index" : 0,
+            "enter" : false,
+            "desc" : ""
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              68,
+              75
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "TypeVar" : {
+            "name" : "α55'",
+            "desc" : null
+          }
+        }
+      ],
+      [
+        {
+          "TypeVar" : {
+            "name" : "α55'",
+            "desc" : null
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              68,
+              75
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ConstructorArg" : {
+            "name" : "Function",
+            "arg_index" : 0,
+            "enter" : true,
+            "desc" : ""
+          }
+        },
+        {
+          "Type" : {
+            "name" : "Function",
+            "args" : [
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              68,
+              73
+            ],
+            "desc" : "operator application"
+          }
+        },
+        {
+          "TypeVar" : {
+            "name" : "α56'",
+            "desc" : null
+          }
+        },
+        {
+          "TypeVar" : {
+            "name" : "α56'",
+            "desc" : null
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              68,
+              73
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ConstructorArg" : {
+            "name" : "Function",
+            "arg_index" : 0,
+            "enter" : true,
+            "desc" : ""
+          }
+        },
+        {
+          "Type" : {
+            "name" : "Function",
+            "args" : [
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              72,
+              73
+            ],
+            "desc" : "reference"
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 0,
+            "char_range" : [
+              678,
+              694
+            ],
+            "desc" : "function type"
+          }
+        },
+        {
+          "Type" : {
+            "name" : "Function",
+            "args" : [
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ConstructorArg" : {
+            "name" : "Function",
+            "arg_index" : 0,
+            "enter" : false,
+            "desc" : ""
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 0,
+            "char_range" : [
+              684,
+              694
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "Type" : {
+            "name" : "Function",
+            "args" : [
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ConstructorArg" : {
+            "name" : "Function",
+            "arg_index" : 0,
+            "enter" : false,
+            "desc" : ""
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 0,
+            "char_range" : [
+              690,
+              694
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "Type" : {
+            "name" : "bool",
+            "args" : [
+            ],
+            "desc" : null
+          }
+        }
+      ],
+      [
+        {
+          "Type" : {
+            "name" : "string",
+            "args" : [
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 0,
+            "char_range" : [
+              239,
+              245
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ConstructorArg" : {
+            "name" : "Function",
+            "arg_index" : 0,
+            "enter" : true,
+            "desc" : ""
+          }
+        },
+        {
+          "Type" : {
+            "name" : "Function",
+            "args" : [
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 0,
+            "char_range" : [
+              239,
+              253
+            ],
+            "desc" : "function type"
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              227,
+              240
+            ],
+            "desc" : "reference"
+          }
+        },
+        {
+          "Type" : {
+            "name" : "Function",
+            "args" : [
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "ConstructorArg" : {
+            "name" : "Function",
+            "arg_index" : 0,
+            "enter" : false,
+            "desc" : ""
+          }
+        },
+        {
+          "ProgLoc" : {
+            "line" : 4,
+            "char_range" : [
+              241,
+              255
+            ],
+            "desc" : null
+          }
+        },
+        {
+          "Type" : {
+            "name" : "string",
+            "args" : [
+            ],
+            "desc" : null
+          }
+        }
+      ]
+    ],
+    "file_path" : "examples/example2/Scratch.mls"
+  }
