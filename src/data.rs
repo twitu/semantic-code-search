@@ -60,16 +60,13 @@ impl Database {
                 UnitFlow::TypeVar(tv) => tv.desc.as_deref() == Some(d),
                 UnitFlow::ProgLoc(p) => p.desc.as_deref() == Some(d),
             },
-            (_, QueryOps::Wildcard) => true,
             _ => false,
         }
     }
 
     pub fn match_flow(&self, flow: &[UnitFlow], query: &[QueryOps]) -> bool {
         match (flow, query) {
-            // Wildcard matches all remaining flows
-            (_, [QueryOps::Wildcard]) => true,
-            (f, [QueryOps::Wildcard, next_query, rest @ ..]) => {
+            (f, [next_query, rest @ ..]) => {
                 // Try each position until we find a match for the next query item
                 for (idx, unit_flow) in f.iter().enumerate() {
                     if self.match_unit_flow(unit_flow, next_query) {
@@ -81,13 +78,6 @@ impl Database {
                 }
 
                 false
-            }
-            ([fhead, frest @ ..], [qhead, qrest @ ..]) => {
-                if self.match_unit_flow(fhead, qhead) {
-                    self.match_flow(frest, qrest)
-                } else {
-                    false
-                }
             }
             (_, []) => true,
             _ => false,
@@ -156,14 +146,14 @@ impl ProgLoc {
             println!(
                 "{}{} {}",
                 format!("[{}]  ", itr).bright_blue(),
-                format!("│").bright_black(), 
+                format!("│").bright_black(),
                 line_text
             );
         } else {
             println!(
                 "{}{} {}",
                 format!("[{}] ", itr).bright_blue(),
-                format!("│").bright_black(), 
+                format!("│").bright_black(),
                 line_text
             );
         }
@@ -177,11 +167,15 @@ impl ProgLoc {
             }
         }
 
-        println!("{}{} {}", " ".repeat(itr_space-1), "└".bright_black(), highlight.green());
+        println!(
+            "{}{} {}",
+            " ".repeat(itr_space - 1),
+            "└".bright_black(),
+            highlight.green()
+        );
 
         true
     }
-    
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -226,13 +220,10 @@ pub enum QueryOps {
     QType(QType),
     /// Match based on string description for a [UnitFlow]
     QDesc(String),
-    /// Match any unit flow
-    Wildcard,
 }
 
 /// A simplified parser for query language
 /// Examples:
-///   *           -> Wildcard
 ///   #2          -> QTypeVar(2) (# for count/number)
 ///   List        -> QType(List)
 ///   List:desc   -> QType(List) with description
@@ -243,8 +234,6 @@ pub enum QueryOps {
 impl QueryOps {
     fn parse_token(token: &str) -> Result<QueryOps, String> {
         match token.trim() {
-            "*" => Ok(QueryOps::Wildcard),
-
             // Handle type variable count: #2
             s if s.starts_with('#') => s[1..]
                 .parse()
@@ -315,12 +304,6 @@ mod tests {
 
     #[test]
     fn test_simplified_query_parsing() {
-        // Test basic patterns
-        assert!(matches!(
-            QueryOps::parse_query("*").unwrap()[0],
-            QueryOps::Wildcard
-        ));
-
         assert!(matches!(
             QueryOps::parse_query("#3").unwrap()[0],
             QueryOps::QTypeVar(3)
@@ -347,7 +330,7 @@ mod tests {
         }
 
         // Test complex query
-        let query = QueryOps::parse_query("List, *, @x.2, \"foo bar\"").unwrap();
+        let query = QueryOps::parse_query("List, @x.2, \"foo bar\"").unwrap();
         assert_eq!(
             query,
             vec![
@@ -355,7 +338,6 @@ mod tests {
                     name: "List".to_string(),
                     desc: None,
                 }),
-                QueryOps::Wildcard,
                 QueryOps::QConstructorArg(QConstructorArg {
                     name: "x".to_string(),
                     arg_index: Some(2),
@@ -365,7 +347,7 @@ mod tests {
             ]
         );
 
-        let query = QueryOps::parse_query("bool,*,\"if-then-else condition\"").unwrap();
+        let query = QueryOps::parse_query("bool,\"if-then-else condition\"").unwrap();
         assert_eq!(
             query,
             vec![
@@ -373,12 +355,21 @@ mod tests {
                     name: "bool".to_string(),
                     desc: None,
                 }),
-                QueryOps::Wildcard,
                 QueryOps::QDesc("if-then-else condition".to_string())
             ]
         );
 
-        let query = QueryOps::parse_query("bool,*,@Tuple.1,*,\"if-then-else condition\"").unwrap();
+        let query = QueryOps::parse_query("@Tuple.2").unwrap();
+        assert_eq!(
+            query,
+            vec![QueryOps::QConstructorArg(QConstructorArg {
+                name: "Tuple".to_string(),
+                arg_index: Some(2),
+                desc: None,
+            })]
+        );
+
+        let query = QueryOps::parse_query("bool,@Tuple.1,\"if-then-else condition\"").unwrap();
         assert_eq!(
             query,
             vec![
@@ -386,13 +377,11 @@ mod tests {
                     name: "bool".to_string(),
                     desc: None,
                 }),
-                QueryOps::Wildcard,
                 QueryOps::QConstructorArg(QConstructorArg {
                     name: "Tuple".to_string(),
                     arg_index: Some(1),
                     desc: None,
                 }),
-                QueryOps::Wildcard,
                 QueryOps::QDesc("if-then-else condition".to_string())
             ]
         );
