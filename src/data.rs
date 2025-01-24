@@ -53,7 +53,9 @@ impl Database {
                 self.count_typevar_flows(&tv.name) == *count
             }
             (UnitFlow::Type(t), QueryOps::QType(q)) => t.name == q.name,
-            (UnitFlow::ConstructorArg(c), QueryOps::QConstructorArg(q)) => c.name == q.name,
+            (UnitFlow::ConstructorArg(c), QueryOps::QConstructorArg(q)) => {
+                c.name == q.name && q.arg_index.map_or(true, |idx| c.arg_index == idx)
+            }
             (_, QueryOps::QDesc(d)) => match uf {
                 UnitFlow::Type(t) => t.desc.as_deref() == Some(d),
                 UnitFlow::ConstructorArg(c) => c.desc.as_deref() == Some(d),
