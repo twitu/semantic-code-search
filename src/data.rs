@@ -131,6 +131,7 @@ pub struct ProgLoc {
     line: String,
     char_range: (usize, usize),
     desc: Option<String>,
+    depth : usize,
 }
 
 impl ProgLoc {
@@ -143,9 +144,11 @@ impl ProgLoc {
             return false;
         }
 
-        let line_text = &loc.line;
+        let depth_spaces = " ".repeat(loc.depth * 2);
+        let line_text = format!("{}{}", depth_spaces, loc.line);
         let max_padding = 7;
         let mut itr_space = 0;
+
         if format!("{itr}").len() == 1 {
             itr_space = format!("[{}]  |", itr).len().min(max_padding);
         } else {
@@ -167,10 +170,12 @@ impl ProgLoc {
                 line_text
             );
         }
+        let start = loc.char_range.0 + (loc.depth*2);
+        let end = loc.char_range.1 + (loc.depth*2);
 
         let mut highlight = String::with_capacity(line_text.len());
         for i in 1..(line_text.len() + 1) {
-            if i >= loc.char_range.0 && i < loc.char_range.1 {
+            if i >= start && i < end {
                 highlight.push('^');
             } else {
                 highlight.push(' ');
