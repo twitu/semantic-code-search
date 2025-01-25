@@ -11,6 +11,13 @@ pub struct Database {
     type_vars: BTreeSet<String>,
 }
 
+#[derive(Debug)]
+pub struct MatchResult<'a> {
+    pub success: bool, 
+    pub flows: Vec<&'a UnitFlow>,
+    pub collecting: bool
+}
+
 impl Database {
     pub fn load_from_json(path: &str) -> Self {
         #[derive(Deserialize)]
@@ -66,7 +73,15 @@ impl Database {
     }
 
     pub fn match_flow(&self, flow: &[UnitFlow], query: &[QueryOps]) -> bool {
-        match (flow, query) {
+        println!("original query - {:?}", query);
+        let filtered_query: Vec<_> = query
+        .iter()
+        .filter(|op| !matches!(op, QueryOps::BracketOpen | QueryOps::BracketClose))
+        .cloned()
+        .collect();
+
+        println!("filtered query - {:?}", filtered_query);
+        match (flow, &filtered_query[..]) {
             // Wildcard matches all remaining flows
             (_, [QueryOps::Wildcard]) => true,
             (f, [QueryOps::Wildcard, next_query, rest @ ..]) => {
@@ -108,6 +123,38 @@ impl Database {
             })
             .count()
     }
+
+    pub fn match_flow_with_collection<'a>(flow: &'a [UnitFlow], query: &[QueryOps]) -> Vec<&'a UnitFlow> {
+        let mut matched_flows = Vec::new();
+        let has_brackets = query.iter().any(|op| matches!(op, QueryOps::BracketOpen | QueryOps::BracketClose));
+        let mut collecting = !has_brackets;
+        println!("collecting - {:?}", collecting);
+        let mut bracket_depth = 0;
+        
+        for (i, op) in query.iter().enumerate() {
+            match op {
+                QueryOps::BracketOpen => {
+                    bracket_depth += 1;
+                    if bracket_depth == 1 {
+                        collecting = true;
+                    }
+                },
+                QueryOps::BracketClose => {
+                    bracket_depth -= 1;
+                    if bracket_depth == 0 {
+                        collecting = false; 
+                    }
+                },
+                _ => {
+                    if collecting && i < flow.len() {
+                        matched_flows.push(&flow[i]);
+                    }
+                }
+            }
+        }
+        println!("matched flows - {:?}", matched_flows);
+        matched_flows
+    }
 }
 type DataFlow = Vec<UnitFlow>;
 
@@ -119,14 +166,14 @@ pub struct Type {
     desc: Option<String>,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct ConstructorArg {
     name: String,
     arg_index: usize,
     desc: Option<String>,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct ProgLoc {
     line: String,
     char_range: (usize, usize),
@@ -189,13 +236,13 @@ impl ProgLoc {
     
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct TypeVar {
     name: String,
     desc: Option<String>,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub enum UnitFlow {
     Type(Type),
     ConstructorArg(ConstructorArg),
@@ -203,7 +250,7 @@ pub enum UnitFlow {
     ProgLoc(ProgLoc),
 }
 
-#[derive(serde::Deserialize, Debug, PartialEq, Eq)]
+#[derive(serde::Deserialize, Debug, PartialEq, Eq, Clone)]
 /// Match constructor argument in the data flow by name
 pub struct QConstructorArg {
     pub name: String,
@@ -213,7 +260,7 @@ pub struct QConstructorArg {
     pub desc: Option<String>,
 }
 
-#[derive(serde::Deserialize, Debug, PartialEq, Eq)]
+#[derive(serde::Deserialize, Debug, PartialEq, Eq, Clone)]
 /// Match type by name
 pub struct QType {
     pub name: String,
@@ -221,7 +268,7 @@ pub struct QType {
     pub desc: Option<String>,
 }
 
-#[derive(serde::Deserialize, Debug, PartialEq, Eq)]
+#[derive(serde::Deserialize, Debug, PartialEq, Eq, Clone)]
 pub enum QueryOps {
     /// Match type variable by in-degree
     QTypeVar(usize),
@@ -233,6 +280,8 @@ pub enum QueryOps {
     QDesc(String),
     /// Match any unit flow
     Wildcard,
+    BracketOpen,
+    BracketClose,
 }
 
 /// A simplified parser for query language
@@ -248,7 +297,8 @@ pub enum QueryOps {
 impl QueryOps {
     fn parse_token(token: &str) -> Result<QueryOps, String> {
         match token.trim() {
-            "*" => Ok(QueryOps::Wildcard),
+            "(" => Ok(QueryOps::BracketOpen),
+            ")" => Ok(QueryOps::BracketClose),
 
             // Handle type variable count: #2
             s if s.starts_with('#') => s[1..]
@@ -305,12 +355,41 @@ impl QueryOps {
     }
 
     pub fn parse_query(input: &str) -> Result<Vec<QueryOps>, String> {
-        input
-            .split(',')
-            .map(str::trim)
+        let mut tokens = Vec::new();
+        let mut current = String::new();
+        
+        for c in input.chars() {
+            match c {
+                ',' => {
+                    if !current.is_empty() {
+                        tokens.push(current.trim().to_string());
+                        current.clear();
+                    }
+                }
+                '(' | ')' => {
+                    if !current.is_empty() {
+                        tokens.push(current.trim().to_string());
+                        current.clear();
+                    }
+                    tokens.push(c.to_string());
+                }
+                _ => current.push(c)
+            }
+        }
+        
+        if !current.is_empty() {
+            tokens.push(current.trim().to_string());
+        }
+
+        // Then parse each token
+        let x = tokens
+            .into_iter()
             .filter(|s| !s.is_empty())
-            .map(Self::parse_token)
-            .collect()
+            .map(|s| Self::parse_token(&s))
+            .collect();
+
+        println!("query - {:?}", x);
+        x
     }
 }
 
