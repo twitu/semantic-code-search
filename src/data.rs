@@ -67,7 +67,13 @@ impl Database {
     }
 
     pub fn match_flow(&self, flow: &[UnitFlow], query: &[QueryOps]) -> bool {
-        match (flow, query) {
+        let filtered_query: Vec<_> = query
+            .iter()
+            .filter(|op| !matches!(op, QueryOps::BracketOpen | QueryOps::BracketClose))
+            .cloned()
+            .collect();
+
+        match (flow, &filtered_query[..]) {
             (f, [next_query, rest @ ..]) => {
                 // Try each position until we find a match for the next query item
                 for (idx, unit_flow) in f.iter().enumerate() {
@@ -100,6 +106,48 @@ impl Database {
             })
             .count()
     }
+
+    pub fn match_flow_collect<'a>(
+        &self,
+        flow: &'a [UnitFlow],
+        filtered_query: &[QueryOps],
+    ) -> (bool, Vec<&'a UnitFlow>) {
+        if !self.match_flow(flow, filtered_query) {
+            return (false, Vec::new());
+        }
+
+        let mut matched_flows = Vec::new();
+        let mut collecting = false;
+        let mut bracket_depth = 0;
+        let mut current_pos = 0;
+
+        for query_op in filtered_query {
+            match query_op {
+                QueryOps::BracketOpen => {
+                    bracket_depth += 1;
+                    if bracket_depth == 1 {
+                        collecting = true;
+                    }
+                }
+                QueryOps::BracketClose => {
+                    bracket_depth -= 1;
+                    if bracket_depth == 0 {
+                        collecting = false;
+                    }
+                }
+                _ => {
+                    while current_pos < flow.len() {
+                        if collecting {
+                            matched_flows.push(&flow[current_pos]);
+                        }
+                        current_pos += 1;
+                        break;
+                    }
+                }
+            }
+        }
+        (true, matched_flows)
+    }
 }
 type DataFlow = Vec<UnitFlow>;
 
@@ -111,18 +159,19 @@ pub struct Type {
     desc: Option<String>,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct ConstructorArg {
     name: String,
     arg_index: usize,
     desc: Option<String>,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct ProgLoc {
     line: String,
     char_range: (usize, usize),
     desc: Option<String>,
+    depth: usize,
 }
 
 impl ProgLoc {
@@ -135,9 +184,11 @@ impl ProgLoc {
             return false;
         }
 
-        let line_text = &loc.line;
+        let depth_spaces = " ".repeat(loc.depth * 2);
+        let line_text = format!("{}{}", depth_spaces, loc.line);
         let max_padding = 7;
         let mut itr_space = 0;
+
         if format!("{itr}").len() == 1 {
             itr_space = format!("[{}]  |", itr).len().min(max_padding);
         } else {
@@ -159,10 +210,12 @@ impl ProgLoc {
                 line_text
             );
         }
+        let start = loc.char_range.0 + (loc.depth * 2);
+        let end = loc.char_range.1 + (loc.depth * 2);
 
         let mut highlight = String::with_capacity(line_text.len());
         for i in 1..(line_text.len() + 1) {
-            if i >= loc.char_range.0 && i < loc.char_range.1 {
+            if i >= start && i < end {
                 highlight.push('^');
             } else {
                 highlight.push(' ');
@@ -180,13 +233,13 @@ impl ProgLoc {
     }
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct TypeVar {
     name: String,
     desc: Option<String>,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub enum UnitFlow {
     Type(Type),
     ConstructorArg(ConstructorArg),
@@ -194,7 +247,7 @@ pub enum UnitFlow {
     ProgLoc(ProgLoc),
 }
 
-#[derive(serde::Deserialize, Debug, PartialEq, Eq)]
+#[derive(serde::Deserialize, Debug, PartialEq, Eq, Clone)]
 /// Match constructor argument in the data flow by name
 pub struct QConstructorArg {
     pub name: String,
@@ -204,7 +257,7 @@ pub struct QConstructorArg {
     pub desc: Option<String>,
 }
 
-#[derive(serde::Deserialize, Debug, PartialEq, Eq)]
+#[derive(serde::Deserialize, Debug, PartialEq, Eq, Clone)]
 /// Match type by name
 pub struct QType {
     pub name: String,
@@ -212,7 +265,7 @@ pub struct QType {
     pub desc: Option<String>,
 }
 
-#[derive(serde::Deserialize, Debug, PartialEq, Eq)]
+#[derive(serde::Deserialize, Debug, PartialEq, Eq, Clone)]
 pub enum QueryOps {
     /// Match type variable by in-degree
     QTypeVar(usize),
@@ -222,6 +275,9 @@ pub enum QueryOps {
     QType(QType),
     /// Match based on string description for a [UnitFlow]
     QDesc(String),
+    /// Match any unit flow
+    BracketOpen,
+    BracketClose,
 }
 
 /// A simplified parser for query language
@@ -234,8 +290,17 @@ pub enum QueryOps {
 ///   @x:desc     -> QConstructorArg(x) with description
 ///   "desc"      -> QDesc(desc)
 impl QueryOps {
+    pub fn has_brackets(query: &[QueryOps]) -> bool {
+        query
+            .iter()
+            .any(|op| matches!(op, QueryOps::BracketOpen | QueryOps::BracketClose))
+    }
+
     fn parse_token(token: &str) -> Result<QueryOps, String> {
         match token.trim() {
+            "(" => Ok(QueryOps::BracketOpen),
+            ")" => Ok(QueryOps::BracketClose),
+
             // Handle type variable count: #2
             s if s.starts_with('#') => s[1..]
                 .parse()
@@ -291,12 +356,38 @@ impl QueryOps {
     }
 
     pub fn parse_query(input: &str) -> Result<Vec<QueryOps>, String> {
-        input
-            .split(',')
-            .map(str::trim)
+        let mut tokens = Vec::new();
+        let mut current = String::new();
+
+        for c in input.chars() {
+            match c {
+                ',' => {
+                    if !current.is_empty() {
+                        tokens.push(current.trim().to_string());
+                        current.clear();
+                    }
+                }
+                '(' | ')' => {
+                    if !current.is_empty() {
+                        tokens.push(current.trim().to_string());
+                        current.clear();
+                    }
+                    tokens.push(c.to_string());
+                }
+                _ => current.push(c),
+            }
+        }
+
+        if !current.is_empty() {
+            tokens.push(current.trim().to_string());
+        }
+
+        let x = tokens
+            .into_iter()
             .filter(|s| !s.is_empty())
-            .map(Self::parse_token)
-            .collect()
+            .map(|s| Self::parse_token(&s))
+            .collect();
+        x
     }
 }
 
