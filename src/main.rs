@@ -8,7 +8,11 @@ fn main() {
 
     let db = Database::load_from_json(&config.data_json);
     let query = config.query;
-    let results = search_dataflows(&db, &query);
+    let results = if QueryOps::has_brackets(&query) {
+        search_and_collect_dataflows(&db, &query)
+    } else {
+        search_dataflows(&db, &query)
+    };
     println!("\n{}", "━".repeat(80).bright_black());
     if results.is_empty() {
         println!("{}", "No data flows matched the query.\n".bright_red());
@@ -26,6 +30,23 @@ fn search_dataflows<'a>(db: &'a Database, query: &'a [QueryOps]) -> Vec<&'a Vec<
     db.data_flows
         .iter()
         .filter(|flow| db.match_flow(flow, query))
+        .collect()
+}
+
+fn search_and_collect_dataflows<'a>(
+    db: &'a Database,
+    query: &'a [QueryOps],
+) -> Vec<&'a Vec<UnitFlow>> {
+    db.data_flows
+        .iter()
+        .filter_map(|flow| {
+            let (matched, collected) = db.match_flow_collect(flow, query);
+            if matched && !collected.is_empty() {
+                Some(flow)
+            } else {
+                None
+            }
+        })
         .collect()
 }
 

@@ -13,9 +13,9 @@ pub struct Database {
 
 #[derive(Debug)]
 pub struct MatchResult<'a> {
-    pub success: bool, 
+    pub success: bool,
     pub flows: Vec<&'a UnitFlow>,
-    pub collecting: bool
+    pub collecting: bool,
 }
 
 impl Database {
@@ -74,14 +74,12 @@ impl Database {
     }
 
     pub fn match_flow(&self, flow: &[UnitFlow], query: &[QueryOps]) -> bool {
-        println!("original query - {:?}", query);
         let filtered_query: Vec<_> = query
-        .iter()
-        .filter(|op| !matches!(op, QueryOps::BracketOpen | QueryOps::BracketClose))
-        .cloned()
-        .collect();
+            .iter()
+            .filter(|op| !matches!(op, QueryOps::BracketOpen | QueryOps::BracketClose))
+            .cloned()
+            .collect();
 
-        println!("filtered query - {:?}", filtered_query);
         match (flow, &filtered_query[..]) {
             (f, [next_query, rest @ ..]) => {
                 // Try each position until we find a match for the next query item
@@ -116,36 +114,46 @@ impl Database {
             .count()
     }
 
-    pub fn match_flow_with_collection<'a>(flow: &'a [UnitFlow], query: &[QueryOps]) -> Vec<&'a UnitFlow> {
+    pub fn match_flow_collect<'a>(
+        &self,
+        flow: &'a [UnitFlow],
+        filtered_query: &[QueryOps],
+    ) -> (bool, Vec<&'a UnitFlow>) {
+        if !self.match_flow(flow, filtered_query) {
+            return (false, Vec::new());
+        }
+
         let mut matched_flows = Vec::new();
-        let has_brackets = query.iter().any(|op| matches!(op, QueryOps::BracketOpen | QueryOps::BracketClose));
-        let mut collecting = !has_brackets;
-        println!("collecting - {:?}", collecting);
+        let mut collecting = false;
         let mut bracket_depth = 0;
-        
-        for (i, op) in query.iter().enumerate() {
-            match op {
+        let mut current_pos = 0;
+
+        for query_op in filtered_query {
+            match query_op {
                 QueryOps::BracketOpen => {
                     bracket_depth += 1;
                     if bracket_depth == 1 {
                         collecting = true;
                     }
-                },
+                }
                 QueryOps::BracketClose => {
                     bracket_depth -= 1;
                     if bracket_depth == 0 {
-                        collecting = false; 
+                        collecting = false;
                     }
-                },
+                }
                 _ => {
-                    if collecting && i < flow.len() {
-                        matched_flows.push(&flow[i]);
+                    while current_pos < flow.len() {
+                        if collecting {
+                            matched_flows.push(&flow[current_pos]);
+                        }
+                        current_pos += 1;
+                        break;
                     }
                 }
             }
         }
-        println!("matched flows - {:?}", matched_flows);
-        matched_flows
+        (true, matched_flows)
     }
 }
 type DataFlow = Vec<UnitFlow>;
@@ -170,7 +178,7 @@ pub struct ProgLoc {
     line: String,
     char_range: (usize, usize),
     desc: Option<String>,
-    depth : usize,
+    depth: usize,
 }
 
 impl ProgLoc {
@@ -209,8 +217,8 @@ impl ProgLoc {
                 line_text
             );
         }
-        let start = loc.char_range.0 + (loc.depth*2);
-        let end = loc.char_range.1 + (loc.depth*2);
+        let start = loc.char_range.0 + (loc.depth * 2);
+        let end = loc.char_range.1 + (loc.depth * 2);
 
         let mut highlight = String::with_capacity(line_text.len());
         for i in 1..(line_text.len() + 1) {
@@ -275,7 +283,6 @@ pub enum QueryOps {
     /// Match based on string description for a [UnitFlow]
     QDesc(String),
     /// Match any unit flow
-    Wildcard,
     BracketOpen,
     BracketClose,
 }
@@ -290,6 +297,12 @@ pub enum QueryOps {
 ///   @x:desc     -> QConstructorArg(x) with description
 ///   "desc"      -> QDesc(desc)
 impl QueryOps {
+    pub fn has_brackets(query: &[QueryOps]) -> bool {
+        query
+            .iter()
+            .any(|op| matches!(op, QueryOps::BracketOpen | QueryOps::BracketClose))
+    }
+
     fn parse_token(token: &str) -> Result<QueryOps, String> {
         match token.trim() {
             "(" => Ok(QueryOps::BracketOpen),
@@ -352,7 +365,7 @@ impl QueryOps {
     pub fn parse_query(input: &str) -> Result<Vec<QueryOps>, String> {
         let mut tokens = Vec::new();
         let mut current = String::new();
-        
+
         for c in input.chars() {
             match c {
                 ',' => {
@@ -368,22 +381,19 @@ impl QueryOps {
                     }
                     tokens.push(c.to_string());
                 }
-                _ => current.push(c)
+                _ => current.push(c),
             }
         }
-        
+
         if !current.is_empty() {
             tokens.push(current.trim().to_string());
         }
 
-        // Then parse each token
         let x = tokens
             .into_iter()
             .filter(|s| !s.is_empty())
             .map(|s| Self::parse_token(&s))
             .collect();
-
-        println!("query - {:?}", x);
         x
     }
 }
