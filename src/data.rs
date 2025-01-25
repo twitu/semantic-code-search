@@ -11,13 +11,6 @@ pub struct Database {
     type_vars: BTreeSet<String>,
 }
 
-#[derive(Debug)]
-pub struct MatchResult<'a> {
-    pub success: bool,
-    pub flows: Vec<&'a UnitFlow>,
-    pub collecting: bool,
-}
-
 impl Database {
     pub fn load_from_json(path: &str) -> Self {
         #[derive(Deserialize)]
